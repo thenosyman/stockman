@@ -14,18 +14,20 @@ public abstract class SingleFragment extends AppCompatActivity{
 
     protected abstract Fragment createFragment();
 
+    protected abstract int getFragmentId();
+
     @LayoutRes
     protected int getLayoutResId(){
         return R.layout.activity_fragment_container;
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = createFragment();
+        Fragment fragment = fm.findFragmentById(getFragmentId());
         if(fragment == null){
             fragment = createFragment();
             fm.beginTransaction()
