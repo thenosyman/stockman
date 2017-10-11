@@ -8,67 +8,49 @@ import java.util.Date;
 
 public class SecurityModel {
 
-    private String security;
-    private String securityDescription;
-    private Date lastUpdatedTime;
-    private String timeZone;
-    private double low;
-    private double close;
-    private double volume;
+    private float open;
+    private float high;
+    private float low;
+    private float close;
+    private float volume;
 
-    public String getSecurity() {
-        return security;
+    public float getOpen() {
+        return open;
     }
 
-    public void setSecurity(String security) {
-        this.security = security;
+    public void setOpen(float open) {
+        this.open = open;
     }
 
-    public String getSecurityDescription() {
-        return securityDescription;
+    public float getHigh() {
+        return high;
     }
 
-    public void setSecurityDescription(String securityDescription) {
-        this.securityDescription = securityDescription;
+    public void setHigh(float high) {
+        this.high = high;
     }
 
-    public Date getLastUpdatedTime() {
-        return lastUpdatedTime;
-    }
-
-    public void setLastUpdatedTime(Date lastUpdatedTime) {
-        this.lastUpdatedTime = lastUpdatedTime;
-    }
-
-    public String getTimeZone() {
-        return timeZone;
-    }
-
-    public void setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
-    }
-
-    public double getLow() {
+    public float getLow() {
         return low;
     }
 
-    public void setLow(double low) {
+    public void setLow(float low) {
         this.low = low;
     }
 
-    public double getClose() {
+    public float getClose() {
         return close;
     }
 
-    public void setClose(double close) {
+    public void setClose(float close) {
         this.close = close;
     }
 
-    public double getVolume() {
+    public float getVolume() {
         return volume;
     }
 
-    public void setVolume(double volume) {
+    public void setVolume(float volume) {
         this.volume = volume;
     }
 }
