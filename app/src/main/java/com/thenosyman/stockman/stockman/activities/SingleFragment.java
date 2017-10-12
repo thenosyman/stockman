@@ -10,14 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.thenosyman.stockman.stockman.R;
 
-public abstract class SingleFragment extends AppCompatActivity{
+public abstract class SingleFragment extends AppCompatActivity {
 
     protected abstract Fragment createFragment();
 
     protected abstract int getFragmentId();
 
     @LayoutRes
-    protected int getLayoutResId(){
+    protected int getLayoutResId() {
         return R.layout.activity_fragment_container;
     }
 
@@ -26,13 +26,15 @@ public abstract class SingleFragment extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
 
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(getFragmentId());
-        if(fragment == null){
-            fragment = createFragment();
-            fm.beginTransaction()
-                    .add(R.id.fragment_container,fragment)
-                    .commit();
+        if(savedInstanceState == null) {
+            FragmentManager fm = getSupportFragmentManager();
+            Fragment fragment = fm.findFragmentById(getFragmentId());
+            if (fragment == null) {
+                fragment = createFragment();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, fragment)
+                        .commit();
+            }
         }
     }
 }

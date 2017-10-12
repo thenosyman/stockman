@@ -29,7 +29,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends SingleFragment {
 
     private final static String TAG = "MainActivity";
-    private AlphavantageService mAlphavantageService;
 
     @Override
     protected Fragment createFragment() {
@@ -40,51 +39,5 @@ public class MainActivity extends SingleFragment {
     protected int getFragmentId() {
         return R.id.security_summary;
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        createAlphavantageService();
-
-        mAlphavantageService.getTimeSeries(AlphavantageService.QUERY_TIME_SERIES_DAILY,
-                "IBM",
-                AlphavantageService.INTERVAL_1MIN,
-                null,
-                null,
-                "N9ZCSY4V80GU1L5B"
-                ).enqueue(dataCallback);
-    }
-
-    private void createAlphavantageService(){
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(SecurityTimeSeriesModel.class,
-                        new SecurityTimeSeriesDeserializer())
-                .registerTypeAdapter(SecurityModel.class, new SecurityDeserializer())
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.alphavantage.co")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        mAlphavantageService = retrofit.create(AlphavantageService.class);
-    }
-
-    Callback<SecurityTimeSeriesModel> dataCallback= new Callback<SecurityTimeSeriesModel>(){
-
-        @Override
-        public void onResponse(Call<SecurityTimeSeriesModel> call, Response<SecurityTimeSeriesModel> response) {
-            if(response.isSuccessful()){
-                Log.d(TAG, "response successful: "+response.body().toString());
-            }else{
-                Log.d(TAG, "response not successful");
-            }
-        }
-
-        @Override
-        public void onFailure(Call<SecurityTimeSeriesModel> call, Throwable t) {
-            Log.d(TAG, "response failed");
-        }
-    };
 
 }
