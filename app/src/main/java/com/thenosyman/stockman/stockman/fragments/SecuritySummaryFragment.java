@@ -21,10 +21,13 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thenosyman.stockman.stockman.R;
+import com.thenosyman.stockman.stockman.model.DailyTimeSeries;
+import com.thenosyman.stockman.stockman.model.MonthlyTimeSeries;
 import com.thenosyman.stockman.stockman.model.SecurityDeserializer;
 import com.thenosyman.stockman.stockman.model.SecurityModel;
-import com.thenosyman.stockman.stockman.model.SecurityTimeSeriesDeserializer;
 import com.thenosyman.stockman.stockman.model.SecurityTimeSeriesModel;
+import com.thenosyman.stockman.stockman.model.TimeSeriesDeserializer;
+import com.thenosyman.stockman.stockman.model.WeeklyTimeSeries;
 import com.thenosyman.stockman.stockman.network.AlphavantageService;
 
 import java.text.SimpleDateFormat;
@@ -53,10 +56,8 @@ public class SecuritySummaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_security_summary, container, false);
-        if(chart == null) {
-            chart = view.findViewById(R.id.chart);
-            createChart();
-        }
+        chart = view.findViewById(R.id.chart);
+        createChart();
         return view;
     }
 
@@ -65,7 +66,7 @@ public class SecuritySummaryFragment extends Fragment {
         HashMap<Calendar, SecurityModel> map = securityTimeSeriesModel.getTimeSeries();
         SortedSet<Calendar> dates = new TreeSet<>(map.keySet());
 
-        int i=0;
+        int i = 0;
         List<Entry> entries = new ArrayList<>();
         final ArrayList<String> xLabel = new ArrayList<>();
         for (Calendar date : dates) {
@@ -95,7 +96,7 @@ public class SecuritySummaryFragment extends Fragment {
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return xLabel.get((int)value);
+                return xLabel.get((int) value);
             }
         });
         xAxis.setLabelRotationAngle(90);
@@ -112,7 +113,7 @@ public class SecuritySummaryFragment extends Fragment {
         chart.invalidate(); // refresh
     }
 
-    public static Fragment newInstance(){
+    public static Fragment newInstance() {
         return new SecuritySummaryFragment();
     }
 
@@ -128,12 +129,12 @@ public class SecuritySummaryFragment extends Fragment {
         createChart();
     }
 
-    private void createChart(){
+    private void createChart() {
         createAlphavantageService();
 
-        mAlphavantageService.getTimeSeries(AlphavantageService.QUERY_TIME_SERIES_DAILY,
+        mAlphavantageService.getTimeSeries(MonthlyTimeSeries.TYPE,
                 "IBM",
-                AlphavantageService.INTERVAL_1MIN,
+                null,
                 null,
                 null,
                 "N9ZCSY4V80GU1L5B"
@@ -142,10 +143,10 @@ public class SecuritySummaryFragment extends Fragment {
 
     }
 
-    private void createAlphavantageService(){
+    private void createAlphavantageService() {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(SecurityTimeSeriesModel.class,
-                        new SecurityTimeSeriesDeserializer())
+                        new TimeSeriesDeserializer())
                 .registerTypeAdapter(SecurityModel.class, new SecurityDeserializer())
                 .create();
 
@@ -156,14 +157,14 @@ public class SecuritySummaryFragment extends Fragment {
         mAlphavantageService = retrofit.create(AlphavantageService.class);
     }
 
-    Callback<SecurityTimeSeriesModel> dataCallback= new Callback<SecurityTimeSeriesModel>(){
+    Callback<SecurityTimeSeriesModel> dataCallback = new Callback<SecurityTimeSeriesModel>() {
 
         @Override
         public void onResponse(Call<SecurityTimeSeriesModel> call, Response<SecurityTimeSeriesModel> response) {
-            if(response.isSuccessful()){
-                Log.d(TAG, "response successful: "+response.body().toString());
+            if (response.isSuccessful()) {
+                Log.d(TAG, "response successful: " + response.body().toString());
                 setChartData(response.body());
-            }else{
+            } else {
                 Log.d(TAG, "response not successful");
             }
         }
@@ -171,6 +172,7 @@ public class SecuritySummaryFragment extends Fragment {
         @Override
         public void onFailure(Call<SecurityTimeSeriesModel> call, Throwable t) {
             Log.d(TAG, "response failed");
+            t.printStackTrace();
         }
     };
 

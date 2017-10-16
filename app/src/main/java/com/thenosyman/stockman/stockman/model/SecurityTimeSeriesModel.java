@@ -9,12 +9,15 @@ import java.util.TimeZone;
  * Created by Ming on 10/9/2017.
  */
 
-public class SecurityTimeSeriesModel {
+public abstract class SecurityTimeSeriesModel {
+
+    public static final String OUTPUT_SIZE_COMPACT = "compact";
+    public static final String OUTPUT_SIZE_FULL = "";
 
     private String mInformation;
     private String mSymbol;
     private Date mLastRefreshedDate;
-    private long mIntervalMs;
+    private String mInterval;
     private TimeZone mTimeZone;
     private HashMap<Calendar, SecurityModel> mTimeSeries;
 
@@ -42,12 +45,12 @@ public class SecurityTimeSeriesModel {
         mLastRefreshedDate = lastRefreshedDate;
     }
 
-    public long getIntervalMs() {
-        return mIntervalMs;
+    public String getInterval() {
+        return mInterval;
     }
 
-    public void setIntervalMs(long intervalMs) {
-        mIntervalMs = intervalMs;
+    public void setInterval(String interval) {
+        mInterval = interval;
     }
 
     public TimeZone getTimeZone() {
@@ -67,4 +70,10 @@ public class SecurityTimeSeriesModel {
     public void setTimeSeries(HashMap<Calendar, SecurityModel> timeSeries) {
         mTimeSeries = timeSeries;
     }
+
+    protected abstract String getType();
+
+    public String getTimeSeriesDescription(){
+        return "Time Series ("+getInterval()+")";
+    };
 }
