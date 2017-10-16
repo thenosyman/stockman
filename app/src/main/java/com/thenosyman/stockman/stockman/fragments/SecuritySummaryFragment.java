@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thenosyman.stockman.stockman.R;
 import com.thenosyman.stockman.stockman.model.DailyTimeSeries;
+import com.thenosyman.stockman.stockman.model.IntradayTimeSeries;
 import com.thenosyman.stockman.stockman.model.MonthlyTimeSeries;
 import com.thenosyman.stockman.stockman.model.SecurityDeserializer;
 import com.thenosyman.stockman.stockman.model.SecurityModel;
@@ -132,10 +133,10 @@ public class SecuritySummaryFragment extends Fragment {
     private void createChart() {
         createAlphavantageService();
 
-        mAlphavantageService.getTimeSeries(MonthlyTimeSeries.TYPE,
+        mAlphavantageService.getTimeSeries(IntradayTimeSeries.TYPE,
                 "IBM",
-                null,
-                null,
+                IntradayTimeSeries.INTERVAL_5MIN,
+                "full",
                 null,
                 "N9ZCSY4V80GU1L5B"
         ).enqueue(dataCallback);

@@ -6,7 +6,7 @@ package com.thenosyman.stockman.stockman.model;
 
 public class IntradayTimeSeries extends SecurityTimeSeriesModel{
 
-    public static final String TYPE = "IME_SERIES_INTRADAY";
+    public static final String TYPE = "TIME_SERIES_INTRADAY";
     public static final String INTERVAL_1MIN = "1min";
     public static final String INTERVAL_5MIN = "5min";
     public static final String INTERVAL_15MIN = "15min";

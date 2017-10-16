@@ -64,7 +64,7 @@ public class TimeSeriesDeserializer implements JsonDeserializer<SecurityTimeSeri
 
         if(informationKey.contains(intradayKey)){
             String interval = metaJson.getAsJsonObject()
-                    .get("Interval").getAsString();
+                    .get("4. Interval").getAsString();
             if(interval == null)
                 throw new IllegalArgumentException("Error: cannot find interval value for intraday time series");
 
